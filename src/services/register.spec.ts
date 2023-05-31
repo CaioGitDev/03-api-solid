@@ -6,6 +6,21 @@ import { fakerPT_PT as faker } from '@faker-js/faker'
 import { UserAlreadyExistsError } from './erros/user-already-exists-error'
 
 describe('Register Service', () => {
+  it('should be able to register', async () => {
+    const usersRepository = new InMemoryUsersRepository()
+    const registerService = new RegisterService(usersRepository)
+
+    const fakeUserCreate = {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    }
+
+    const { user } = await registerService.execute(fakeUserCreate)
+
+    expect(user.id).toEqual(expect.any(String))
+  })
+
   it('should hash user password upo registration', async () => {
     const usersRepository = new InMemoryUsersRepository()
     const registerService = new RegisterService(usersRepository)
