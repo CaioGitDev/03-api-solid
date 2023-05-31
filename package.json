@@ -10,7 +10,9 @@
     "database:up": "docker compose up -d",
     "database:stop": "docker compose stop",
     "migrate:up": "npx prisma migrate dev",
-    "test": "vitest run"
+    "test": "vitest run",
+    "teste:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +20,7 @@
     "@faker-js/faker": "8.0.2",
     "@rocketseat/eslint-config": "1.2.0",
     "@types/node": "20.2.5",
+    "@vitest/coverage-c8": "0.31.3",
     "eslint": "8.41.0",
     "prisma": "4.14.1",
     "tsup": "6.7.0",
@@ -29,6 +32,7 @@
   "dependencies": {
     "@prisma/client": "4.14.1",
     "@types/bcryptjs": "2.4.2",
+    "@vitest/ui": "0.31.3",
     "bcryptjs": "2.4.3",
     "dotenv": "16.0.3",
     "fastify": "4.17.0",

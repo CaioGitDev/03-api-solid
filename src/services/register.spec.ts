@@ -8,7 +8,7 @@ import { UserAlreadyExistsError } from './erros/user-already-exists-error'
 describe('Register Service', () => {
   it('should be able to register', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const registerService = new RegisterService(usersRepository)
+    const sut = new RegisterService(usersRepository)
 
     const fakeUserCreate = {
       name: faker.person.fullName(),
@@ -16,14 +16,14 @@ describe('Register Service', () => {
       password: faker.internet.password(),
     }
 
-    const { user } = await registerService.execute(fakeUserCreate)
+    const { user } = await sut.execute(fakeUserCreate)
 
     expect(user.id).toEqual(expect.any(String))
   })
 
   it('should hash user password upo registration', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const registerService = new RegisterService(usersRepository)
+    const sut = new RegisterService(usersRepository)
 
     const fakeUserCreate = {
       name: faker.person.fullName(),
@@ -31,7 +31,7 @@ describe('Register Service', () => {
       password: faker.internet.password(),
     }
 
-    const { user } = await registerService.execute(fakeUserCreate)
+    const { user } = await sut.execute(fakeUserCreate)
 
     const isPasswordCorrectlyHashed = await compare(
       fakeUserCreate.password,
@@ -43,7 +43,7 @@ describe('Register Service', () => {
 
   it('should not be able to register with same email twice', async () => {
     const usersRepository = new InMemoryUsersRepository()
-    const registerService = new RegisterService(usersRepository)
+    const sut = new RegisterService(usersRepository)
 
     const fakeUserCreate = {
       name: faker.person.fullName(),
@@ -51,10 +51,10 @@ describe('Register Service', () => {
       password: faker.internet.password(),
     }
 
-    await registerService.execute(fakeUserCreate)
+    await sut.execute(fakeUserCreate)
 
-    expect(() =>
-      registerService.execute(fakeUserCreate),
-    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+    await expect(() => sut.execute(fakeUserCreate)).rejects.toBeInstanceOf(
+      UserAlreadyExistsError,
+    )
   })
 })
