@@ -41,4 +41,25 @@ describe('Authenticate Service', () => {
       }),
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
+
+  it('should not be able to authenticate with wrong password', async () => {
+    const usersRepository = new InMemoryUsersRepository()
+    const sut = new AuthenticateServer(usersRepository)
+
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+
+    await usersRepository.create({
+      name: faker.person.fullName(),
+      email,
+      password_hash: await hash(password, 6),
+    })
+
+    expect(() =>
+      sut.execute({
+        email,
+        password: faker.internet.password(),
+      }),
+    ).rejects.toBeInstanceOf(InvalidCredentialsError)
+  })
 })
