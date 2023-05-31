@@ -1,15 +1,20 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { RegisterService } from './register'
 import { compare } from 'bcryptjs'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { fakerPT_PT as faker } from '@faker-js/faker'
 import { UserAlreadyExistsError } from './erros/user-already-exists-error'
 
-describe('Register Service', () => {
-  it('should be able to register', async () => {
-    const usersRepository = new InMemoryUsersRepository()
-    const sut = new RegisterService(usersRepository)
+let usersRepository: InMemoryUsersRepository
+let sut: RegisterService
 
+describe('Register Service', () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRepository()
+    sut = new RegisterService(usersRepository)
+  })
+
+  it('should be able to register', async () => {
     const fakeUserCreate = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
@@ -22,9 +27,6 @@ describe('Register Service', () => {
   })
 
   it('should hash user password upo registration', async () => {
-    const usersRepository = new InMemoryUsersRepository()
-    const sut = new RegisterService(usersRepository)
-
     const fakeUserCreate = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
@@ -42,9 +44,6 @@ describe('Register Service', () => {
   })
 
   it('should not be able to register with same email twice', async () => {
-    const usersRepository = new InMemoryUsersRepository()
-    const sut = new RegisterService(usersRepository)
-
     const fakeUserCreate = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
