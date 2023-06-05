@@ -36,7 +36,7 @@ describe('Authenticate Service', () => {
     const email = faker.internet.email()
     const password = faker.internet.password()
 
-    expect(() =>
+    await expect(() =>
       sut.execute({
         email,
         password,
@@ -54,7 +54,7 @@ describe('Authenticate Service', () => {
       password_hash: await hash(password, 6),
     })
 
-    expect(() =>
+    await expect(() =>
       sut.execute({
         email,
         password: faker.internet.password(),
