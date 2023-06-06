@@ -10,8 +10,8 @@ let gymsRepository: InMemoryGymsRepository
 let sut: CheckInService
 
 describe('Check Ins Service', () => {
-  const userLatitude = faker.location.latitude()
-  const userLongitude = faker.location.longitude()
+  const userLatitude = 39.0239034
+  const userLongitude = -8.7920232
 
   beforeEach(() => {
     checkInsRepository = new InMemoryCheckInsRepository()
@@ -23,8 +23,8 @@ describe('Check Ins Service', () => {
       title: faker.company.name(),
       Description: faker.company.catchPhraseDescriptor(),
       phone: faker.phone.number('+351 #########'),
-      latitude: new Decimal(faker.location.latitude()),
-      longitude: new Decimal(faker.location.longitude()),
+      latitude: new Decimal(39.022182),
+      longitude: new Decimal(-8.7931455),
     })
 
     vi.useFakeTimers()
@@ -93,8 +93,8 @@ describe('Check Ins Service', () => {
       title: faker.company.name(),
       Description: faker.company.catchPhraseDescriptor(),
       phone: faker.phone.number('+351 #########'),
-      latitude: new Decimal(faker.location.latitude()),
-      longitude: new Decimal(faker.location.longitude()),
+      latitude: new Decimal(38.9766027),
+      longitude: new Decimal(-8.810892),
     })
 
     await expect(() =>
