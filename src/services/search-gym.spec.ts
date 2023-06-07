@@ -34,4 +34,24 @@ describe('Search gym Service', () => {
     expect(gyms).toHaveLength(1)
     expect(gyms).toEqual([expect.objectContaining({ title: 'scorpusfit' })])
   })
+
+  it('should be able to fetch paginated gyms search', async () => {
+    for (let i = 1; i <= 22; i++) {
+      await gymsRepository.create({
+        title: `Escola de ${i}`,
+        description: faker.company.catchPhrase(),
+        phone: faker.phone.number('+351 #########'),
+        latitude: faker.location.latitude(),
+        longitude: faker.location.longitude(),
+      })
+    }
+
+    const { gyms } = await sut.execute({ query: 'Escola', page: 2 })
+
+    expect(gyms).toHaveLength(2)
+    expect(gyms).toEqual([
+      expect.objectContaining({ title: 'Escola de 21' }),
+      expect.objectContaining({ title: 'Escola de 22' }),
+    ])
+  })
 })
