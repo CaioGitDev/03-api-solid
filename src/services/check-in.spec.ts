@@ -13,18 +13,18 @@ describe('Check Ins Service', () => {
   const userLatitude = 39.0239034
   const userLongitude = -8.7920232
 
-  beforeEach(() => {
+  beforeEach(async () => {
     checkInsRepository = new InMemoryCheckInsRepository()
     gymsRepository = new InMemoryGymsRepository()
     sut = new CheckInService(checkInsRepository, gymsRepository)
 
-    gymsRepository.items.push({
+    await gymsRepository.create({
       id: 'gym-01',
       title: faker.company.name(),
-      Description: faker.company.catchPhraseDescriptor(),
+      description: faker.company.catchPhraseDescriptor(),
       phone: faker.phone.number('+351 #########'),
-      latitude: new Decimal(39.022182),
-      longitude: new Decimal(-8.7931455),
+      latitude: 39.022182,
+      longitude: -8.7931455,
     })
 
     vi.useFakeTimers()
@@ -88,10 +88,10 @@ describe('Check Ins Service', () => {
   })
 
   it('should not be able to check in on distant gym', async () => {
-    gymsRepository.items.push({
+    await gymsRepository.create({
       id: 'gym-02',
       title: faker.company.name(),
-      Description: faker.company.catchPhraseDescriptor(),
+      description: faker.company.catchPhraseDescriptor(),
       phone: faker.phone.number('+351 #########'),
       latitude: new Decimal(38.9766027),
       longitude: new Decimal(-8.810892),
