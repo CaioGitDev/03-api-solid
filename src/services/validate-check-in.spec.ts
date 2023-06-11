@@ -1,6 +1,7 @@
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { ValidateCheckInService } from './validate-check-in'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { ResourceNotFoundError } from './erros/resource-not-found-error'
 
 let checkInRepository: InMemoryCheckInsRepository
 let sut: ValidateCheckInService
@@ -23,5 +24,13 @@ describe('Validade Check In Service', () => {
 
     expect(checkInValidade.validated_at).toEqual(expect.any(Date))
     expect(checkInRepository.items[0].validated_at).toEqual(expect.any(Date))
+  })
+
+  it('should not be able to validade an inexistent check in', async () => {
+    await expect(() =>
+      sut.execute({
+        checkInId: 'invalid-id',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })
